@@ -5,8 +5,8 @@
         <div class="flex-1 flex flex-col p-8">
           <h3 class="mt-6 text-gray-900 text-sm font-medium">{{ tip.title }}</h3>
           <dl class="mt-1 flex-grow flex flex-col justify-between">
-            <dt class="sr-only">Content</dt>
-            <dd class="text-gray-500 text-sm">{{ tip.content }}</dd>
+            <dt class="sr-only">Tag</dt>
+            <dd class="text-gray-500 text-sm">{{ tip.tag }}</dd>
           </dl>
           <dl class="mt-1 flex-grow flex flex-col justify-between">
             <dt class="sr-only">Creator</dt>
