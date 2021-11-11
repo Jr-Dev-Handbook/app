@@ -13,8 +13,8 @@ const tipsSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  tag: {
-    type: String,
+  tags: {
+    type: Array,
     required: true
   }
 });
