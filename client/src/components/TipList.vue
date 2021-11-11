@@ -10,14 +10,15 @@
                   {{ tip.title }}
                 </h3>
               </div>
-              <div class="flex-shrink-0 flex-wrap inline-block px-2 mr-2 py-0.5 my-1 text-green-800 text-xs font-medium bg-green-100 rounded-full">{{ tip.tag }}</div>
-
               <p class="mt-1 text-gray-500 text-sm truncate">
                 {{ tip.content }}
               </p>
               <p class="mt-1 text-gray-500 text-sm truncate">
                 {{ tip.creator }}
               </p>
+              <div class="flex flex-row-reverse">
+                <div v-for="tag in tip.tags" :key="tag" class="flex-shrink-0 flex-wrap inline-block px-2 mr-2 py-0.5 my-1 text-green-800 text-xs font-medium bg-green-100 rounded-full">{{ tag }}</div>
+              </div>
             </div>
           </div>
         </router-link>
