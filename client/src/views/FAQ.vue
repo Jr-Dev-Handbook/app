@@ -1,9 +1,12 @@
 <template>
-  <h1>Q&A Page</h1>
+  <FaqList />
 </template>
 
 <script>
-export default {};
+import FaqList from '@/components/FaqList.vue';
+export default {
+  components: {
+    FaqList
+  }
+};
 </script>
-
-<style></style>
