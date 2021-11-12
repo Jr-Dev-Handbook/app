@@ -3,7 +3,8 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-import router from './router/router.js';
+import tipRouter from './router/tipRouter.js';
+import faqRouter from './router/faqRouter.js';
 
 const app = express();
 app.use(cors());
@@ -11,7 +12,8 @@ app.use(express.json());
 
 dotenv.config();
 
-app.use('/tips', router);
+app.use('/tips', tipRouter);
+app.use('/faqs', faqRouter);
 
 app.listen(process.env.PORT, () => {
   mongoose
