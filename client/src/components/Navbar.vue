@@ -46,7 +46,7 @@ import { SearchIcon, MenuIcon, XIcon } from '@heroicons/vue/outline';
 
 const navigation = [
   { name: 'Tips', href: '/', current: true },
-  { name: 'Q&A', href: '#', current: false },
+  { name: 'FAQ', href: '/faq', current: false },
   { name: 'Fundamentals', href: '#', current: false }
 ];
 
