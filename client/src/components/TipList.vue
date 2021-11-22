@@ -22,10 +22,16 @@
         <router-link :to="{ name: 'SingleTip', params: { id: tip._id } }">
           <div class="w-full flex items-center justify-between p-6 space-x-6">
             <div class="flex-1 w-full space-y-2">
-              <div class="flex items-center space-x-3">
+              <div class="flex justify-between items-center space-x-3">
                 <h3 class="text-gray-900 text-sm font-medium truncate">
                   {{ tip.title }}
                 </h3>
+                <div>
+                  <!-- @click.prevent prevents refreshing the page -->
+                  <div @click.prevent="removeTip(tip._id)" class="flex-shrink-0 flex-wrap inline-block px-2 mr-2 py-0.5 my-1 text-red-800 text-xs font-medium rounded-full">
+                    <TrashIcon class="h-6 w-6" aria-hidden="true" />
+                  </div>
+                </div>
               </div>
               <p class="mt-1 text-gray-500 text-sm truncate">
                 {{ tip.content }}
@@ -35,6 +41,7 @@
                 <p class="mt-1 text-gray-500 text-sm truncate italic">
                   {{ tip.creator }}
                 </p>
+
                 <div>
                   <div v-for="tag in tip.tags" :key="tag" class="flex-shrink-0 flex-wrap inline-block px-2 mr-2 py-0.5 my-1 text-green-800 text-xs font-medium bg-green-100 rounded-full">{{ tag }}</div>
                 </div>
@@ -48,17 +55,20 @@
 </template>
 
 <script>
-import { PlusCircleIcon } from '@heroicons/vue/solid';
+import { PlusCircleIcon, TrashIcon } from '@heroicons/vue/solid';
 
 import { ref } from '@vue/reactivity';
+import { useRouter } from 'vue-router';
 import { onMounted } from 'vue';
 
 export default {
   components: {
-    PlusCircleIcon
+    PlusCircleIcon,
+    TrashIcon
   },
   setup() {
     const tips = ref([]);
+    const router = useRouter();
 
     const API_URL = 'http://localhost:5000/tips';
 
@@ -72,8 +82,19 @@ export default {
       tips.value = json;
     }
 
+    async function removeTip(_id) {
+      await fetch(`${API_URL}/${_id}`, {
+        method: 'DELETE'
+      });
+      router.push({
+        name: 'Home'
+      });
+      getTips();
+    }
+
     return {
-      tips
+      tips,
+      removeTip
     };
   }
 };
