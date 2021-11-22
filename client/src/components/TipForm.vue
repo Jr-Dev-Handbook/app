@@ -36,28 +36,16 @@ export default {
       required: true
     },
     submitForm: {
-      type: Object,
+      type: Function,
       required: true
     }
   },
   setup(props) {
     // eslint-disable-next-line vue/no-setup-props-destructure
     const result = props.tip;
-    // eslint-disable-next-line vue/no-setup-props-destructure
-    const resultTag = props.tip.tags;
-    // const resultTag = [];
-
-    function findTags() {
-      console.log(resultTag);
-      const tags = resultTag.toString();
-      console.log('test');
-      console.log(tags);
-    }
-    findTags();
 
     return {
-      result,
-      findTags
+      result
     };
   }
 };

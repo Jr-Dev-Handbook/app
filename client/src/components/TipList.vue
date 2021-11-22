@@ -27,6 +27,11 @@
                   {{ tip.title }}
                 </h3>
                 <div>
+                  <router-link :to="{ name: 'UpdateTip', params: { id: tip._id } }">
+                    <div @click="editTip(tip._id)" class="flex-shrink-0 flex-wrap inline-block px-2 mr-2 py-0.5 my-1 text-red-800 text-xs font-medium rounded-full">
+                      <PencilIcon class="h-6 w-6" aria-hidden="true" />
+                    </div>
+                  </router-link>
                   <!-- @click.prevent prevents refreshing the page -->
                   <div @click.prevent="removeTip(tip._id)" class="flex-shrink-0 flex-wrap inline-block px-2 mr-2 py-0.5 my-1 text-red-800 text-xs font-medium rounded-full">
                     <TrashIcon class="h-6 w-6" aria-hidden="true" />
@@ -55,7 +60,7 @@
 </template>
 
 <script>
-import { PlusCircleIcon, TrashIcon } from '@heroicons/vue/solid';
+import { PlusCircleIcon, TrashIcon, PencilIcon } from '@heroicons/vue/solid';
 
 import { ref } from '@vue/reactivity';
 import { useRouter } from 'vue-router';
@@ -64,7 +69,8 @@ import { onMounted } from 'vue';
 export default {
   components: {
     PlusCircleIcon,
-    TrashIcon
+    TrashIcon,
+    PencilIcon
   },
   setup() {
     const tips = ref([]);
@@ -92,9 +98,19 @@ export default {
       getTips();
     }
 
+    async function editTip(_id) {
+      router.push({
+        name: 'Update',
+        params: {
+          id: _id
+        }
+      });
+    }
+
     return {
       tips,
-      removeTip
+      removeTip,
+      editTip
     };
   }
 };
