@@ -36,6 +36,23 @@ tipRouter.post('/', async (req, res) => {
   }
 });
 
+tipRouter.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, content, creator, tags } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('unable to find tip');
+
+    const updatedTip = { title, content, creator, tags, _id: id };
+
+    await Tip.findByIdAndUpdate(id, updatedTip, { new: true });
+
+    res.json(updatedTip);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 tipRouter.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
