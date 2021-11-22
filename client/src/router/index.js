@@ -8,6 +8,14 @@ const routes = [
     component: Home
   },
   {
+    path: '/create',
+    name: 'CreateTip',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "create" */ '../views/CreateTip.vue')
+  },
+  {
     path: '/:id',
     name: 'SingleTip',
     // route level code-splitting
@@ -30,7 +38,7 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "SingleFaq" */ '../views/SingleFaq.vue')
-  },
+  }
 ];
 
 const router = createRouter({
