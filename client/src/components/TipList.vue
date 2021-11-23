@@ -4,6 +4,12 @@
       <div class="text-center">
         <p class="mt-1 text-2xl font-extrabold text-gray-900 sm:text-3xl sm:tracking-tight lg:text-4xl">Tips</p>
         <p class="max-w-xl mt-5 mx-auto text-xl text-gray-500">We have currently {{ tips.length }} tips in our list</p>
+        <router-link :to="{ name: 'CreateTip' }">
+          <button type="button" class="inline-flex items-center mt-10 px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Submit your tip
+            <PlusCircleIcon class="ml-3 -mr-1 h-5 w-5" aria-hidden="true" />
+          </button>
+        </router-link>
       </div>
     </div>
   </div>
@@ -16,10 +22,21 @@
         <router-link :to="{ name: 'SingleTip', params: { id: tip._id } }">
           <div class="w-full flex items-center justify-between p-6 space-x-6">
             <div class="flex-1 w-full space-y-2">
-              <div class="flex items-center space-x-3">
+              <div class="flex justify-between items-center space-x-3">
                 <h3 class="text-gray-900 text-sm font-medium truncate">
                   {{ tip.title }}
                 </h3>
+                <div>
+                  <router-link :to="{ name: 'UpdateTip', params: { id: tip._id } }">
+                    <div @click="editTip(tip._id)" class="flex-shrink-0 flex-wrap inline-block px-2 mr-2 py-0.5 my-1 text-red-800 text-xs font-medium rounded-full">
+                      <PencilIcon class="h-6 w-6" aria-hidden="true" />
+                    </div>
+                  </router-link>
+                  <!-- @click.prevent prevents refreshing the page -->
+                  <div @click.prevent="removeTip(tip._id)" class="flex-shrink-0 flex-wrap inline-block px-2 mr-2 py-0.5 my-1 text-red-800 text-xs font-medium rounded-full">
+                    <TrashIcon class="h-6 w-6" aria-hidden="true" />
+                  </div>
+                </div>
               </div>
               <p class="mt-1 text-gray-500 text-sm truncate">
                 {{ tip.content }}
@@ -29,6 +46,7 @@
                 <p class="mt-1 text-gray-500 text-sm truncate italic">
                   {{ tip.creator }}
                 </p>
+
                 <div>
                   <div v-for="tag in tip.tags" :key="tag" class="flex-shrink-0 flex-wrap inline-block px-2 mr-2 py-0.5 my-1 text-green-800 text-xs font-medium bg-green-100 rounded-full">{{ tag }}</div>
                 </div>
@@ -42,12 +60,21 @@
 </template>
 
 <script>
+import { PlusCircleIcon, TrashIcon, PencilIcon } from '@heroicons/vue/solid';
+
 import { ref } from '@vue/reactivity';
+import { useRouter } from 'vue-router';
 import { onMounted } from 'vue';
 
 export default {
+  components: {
+    PlusCircleIcon,
+    TrashIcon,
+    PencilIcon
+  },
   setup() {
     const tips = ref([]);
+    const router = useRouter();
 
     const API_URL = 'http://localhost:5000/tips';
 
@@ -61,8 +88,29 @@ export default {
       tips.value = json;
     }
 
+    async function removeTip(_id) {
+      await fetch(`${API_URL}/${_id}`, {
+        method: 'DELETE'
+      });
+      router.push({
+        name: 'Home'
+      });
+      getTips();
+    }
+
+    async function editTip(_id) {
+      router.push({
+        name: 'Update',
+        params: {
+          id: _id
+        }
+      });
+    }
+
     return {
-      tips
+      tips,
+      removeTip,
+      editTip
     };
   }
 };
