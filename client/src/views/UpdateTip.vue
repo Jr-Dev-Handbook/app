@@ -1,6 +1,6 @@
 <template>
   <div class="max-w-3xl mx-auto py-6 px-4 sm:py-8 sm:px-6 lg:px-8 lg:py-10">
-    <TipForm :tip="tip" :submitForm="updateTip" :getTip="getTip" />
+    <TipForm :tip="tip" :submitForm="updateTip" />
   </div>
 </template>
 

@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { ref, watchEffect } from 'vue';
 export default {
   props: {
     tip: {
@@ -41,8 +42,12 @@ export default {
     }
   },
   setup(props) {
-    // eslint-disable-next-line vue/no-setup-props-destructure
-    const result = props.tip;
+    // if you don't want to lose reactivity of your props, use them with ref and watchEffect
+    const result = ref(props.tip);
+
+    watchEffect(() => {
+      result.value = props.tip;
+    });
 
     return {
       result
