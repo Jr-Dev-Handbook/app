@@ -148,7 +148,7 @@ export default {
   },
   setup() {
     const tips = ref([]);
-    const allTips = ref([])
+    const allTips = ref([]);
     const router = useRouter();
 
     const API_URL = 'http://localhost:5000/tips';
@@ -165,8 +165,8 @@ export default {
     }
 
     const loadMore = () => {
-      tips.value = allTips.value
-    }
+      tips.value = allTips.value;
+    };
 
     async function removeTip(_id) {
       await fetch(`${API_URL}/${_id}`, {
