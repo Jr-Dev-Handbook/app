@@ -21,6 +21,7 @@
             </div>
           </div>
         </div>
+        <Login />
         <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
           <button type="button" class="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
             <span class="sr-only">Search</span>
@@ -43,11 +44,12 @@ import { watch, reactive } from 'vue';
 
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue';
 import { SearchIcon, MenuIcon, XIcon } from '@heroicons/vue/outline';
+import Login from '@/components/Login.vue';
 
 const navigation = [
-  { name: 'Tips', href: '/', current: true },
-  { name: 'FAQ', href: '/faq', current: false },
-  { name: 'Fundamentals', href: '#', current: false }
+  { name: 'Tips', href: '/', current: true }
+  // { name: 'FAQ', href: '/faq', current: false },
+  // { name: 'Fundamentals', href: '#', current: false }
 ];
 
 export default {
@@ -57,7 +59,8 @@ export default {
     DisclosurePanel,
     SearchIcon,
     MenuIcon,
-    XIcon
+    XIcon,
+    Login
   },
   setup() {
     const nav = reactive(navigation);
