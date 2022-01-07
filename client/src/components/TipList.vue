@@ -14,9 +14,9 @@
     </div>
   </div>
 
-  <div class="flex justify-between mx-auto py-6 px-4 sm:py-8 sm:px-6 lg:px-8 lg:py-10 my-8 max-w-7xl">
-    <ul class="grid grid-cols-1 gap-y-6 gap-x-12 sm:grid-cols-2 lg:grid-cols-2">
-      <li v-for="tip in tips" :key="tip._id" class="col-span-1 bg-white rounded-lg shadow divide-y divide-gray-200 relative border-t-2 border-indigo-600">
+  <div class="grid grid-cols-1 lg:grid-row-3 lg:grid-cols-3 mx-auto py-6 px-4 sm:py-8 sm:px-6 lg:flex-nowrap lg:px-8 lg:py-10 my-8 max-w-7xl">
+    <ul class="order-2 lg:order-1 grid grid-cols-1 gap-y-6 gap-x-12 sm:grid-cols-2 lg:grid-cols-2 mb-5 lg:col-span-2">
+      <li v-for="tip in tips" :key="tip._id" class="bg-white rounded-lg shadow divide-y divide-gray-200 relative border-t-2 border-indigo-600">
         <router-link :to="{ name: 'SingleTip', params: { id: tip._id } }">
           <div class="w-full flex items-center justify-between p-6 space-x-6 h-48">
             <div class="flex-1 w-full space-y-2">
@@ -56,15 +56,16 @@
         </router-link>
       </li>
     </ul>
-    <div class="flex flex-col">
-      <div class="flex flex-col px-10 h-full mb-6">
+
+    <div class="flex flex-col order-1 lg:order-2 mx-auto mb-10 lg:mx-12 lg:col-span-1 lg:self-start">
+      <div class="hidden lg:block flex flex-col justify-center content-start px-10 h-full">
         <a class="text-gray-500 dark:text-gray-300 hover:bg-gray-400 hover:bg-opacity-10 font-medium w-16 md:w-60 rounded-l-full lg:rounded-full flex" target="_blank" rel="noreferrer" href="https://stats.gallery/"
           ><div class="rounded-l-full py-3 pl-4 pr-3 flex">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 67.526 76.5703" fill="currentColor">
               <path class="cls-1" d="M37.8925,23.1852C30.964,37.3934,24.2679,51.1273,17.5691,64.86c-1.4565,2.9859-3.015,5.9266-4.3443,8.9678a2.7152,2.7152,0,0,1-3.04,1.845C7.2821,75.56,4.3717,75.64,1.4778,75.64c-.23-1.0363.3866-1.7017.7391-2.4179Q19.5456,38.0088,36.9191,2.8177c.3529-.7151.44-1.8821,1.3478-1.9241.9712-.0449,1.0345,1.1519,1.38,1.8516Q52.8455,29.4379,66.028,56.1384c.8479,1.71,1.1321,2.6369-1.3688,2.4124-2.801-.2514-6.1589.9952-8.287-.4546-2.0074-1.3676-2.7858-4.5738-4.0439-7.0028Q45.9092,38.7012,39.5325,26.2871C39.0838,25.4171,38.6179,24.5559,37.8925,23.1852Z" />
             </svg>
           </div>
-          <div class="hidden md:flex flex-grow rounded-r-full py-3 items-center">
+          <div class="hidden md:flex flex-grow rounded-r-full py-3 items-center bg-">
             Stats Gallery<svg class="w-3 text-gray-400 ml-2" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 fill-rule="evenodd"
@@ -110,9 +111,9 @@
         ></a>
       </div>
 
-      <hr class="w-72 dark:border-gray-700 hidden md:block mx-12" />
-      <div class="flex flex-col p-10 mx-12 rounded-lg border shadow border-gray-200 h-full mt-10">
-        <h1 class="w-48 mt-1 text-2xl font-extrabold text-gray-900 sm:text-3xl sm:tracking-tight lg:text-2xl">Popular tips</h1>
+      <hr class="dark:border-gray-700 hidden lg:block my-6" />
+      <div class="flex flex-col p-10 rounded-lg border shadow border-gray-200 h-full mt-4">
+        <h1 class="mt-1 text-2xl font-extrabold text-gray-900 sm:text-3xl sm:tracking-tight lg:text-2xl">Popular tips</h1>
         <ol class="list-decimal mt-6">
           <li v-for="tip in tips.slice(0, 5)" :key="tip._id" class="popular">
             <router-link :to="{ name: 'SingleTip', params: { id: tip._id } }">
@@ -124,6 +125,8 @@
         </ol>
       </div>
     </div>
+
+    <button v-if="!disableButton" @click="loadMore" type="button" class="order-3 lg:row-start-2 lg:col-span-2 justify-self-center inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Load more</button>
   </div>
 </template>
 
@@ -145,7 +148,9 @@ export default {
   },
   setup() {
     const tips = ref([]);
+    const allTips = ref([]);
     const router = useRouter();
+    const disableButton = ref(false);
 
     const API_URL = 'http://localhost:5000/tips';
 
@@ -156,8 +161,19 @@ export default {
     async function getTips() {
       const response = await fetch(API_URL);
       const json = await response.json();
-      tips.value = json;
+      allTips.value = json;
+      tips.value = json.slice(0, 6);
     }
+
+    const loadMore = () => {
+      tips.value = allTips.value;
+      if (tips.value.length === allTips.value.length) {
+        disableButton.value = true;
+      } else {
+        disableButton.value = false;
+      }
+      console.log(disableButton.value);
+    };
 
     async function removeTip(_id) {
       await fetch(`${API_URL}/${_id}`, {
@@ -181,7 +197,9 @@ export default {
     return {
       tips,
       removeTip,
-      editTip
+      editTip,
+      loadMore,
+      disableButton
     };
   }
 };
