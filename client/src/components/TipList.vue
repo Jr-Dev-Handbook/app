@@ -126,7 +126,7 @@
       </div>
     </div>
 
-    <button @click="loadMore" type="button" class="order-3 lg:row-start-2 lg:col-span-2 justify-self-center inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Load more</button>
+    <button v-if="!disableButton" @click="loadMore" type="button" class="order-3 lg:row-start-2 lg:col-span-2 justify-self-center inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Load more</button>
   </div>
 </template>
 
@@ -150,6 +150,7 @@ export default {
     const tips = ref([]);
     const allTips = ref([]);
     const router = useRouter();
+    const disableButton = ref(false);
 
     const API_URL = 'http://localhost:5000/tips';
 
@@ -166,6 +167,12 @@ export default {
 
     const loadMore = () => {
       tips.value = allTips.value;
+      if (tips.value.length === allTips.value.length) {
+        disableButton.value = true;
+      } else {
+        disableButton.value = false;
+      }
+      console.log(disableButton.value);
     };
 
     async function removeTip(_id) {
@@ -191,7 +198,8 @@ export default {
       tips,
       removeTip,
       editTip,
-      loadMore
+      loadMore,
+      disableButton
     };
   }
 };
