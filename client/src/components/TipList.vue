@@ -30,7 +30,7 @@
                       <PencilIcon class="h-6 w-6" aria-hidden="true" />
                     </div>
                   </router-link>
-                  <@click.prevent prevents refreshing the page 
+                  <@click.prevent prevents refreshing the page
                   <div @click.prevent="removeTip(tip._id)" class="flex-shrink-0 flex-wrap inline-block px-2 mr-2 py-0.5 my-1 text-red-800 text-xs font-medium rounded-full">
                     <TrashIcon class="h-6 w-6" aria-hidden="true" />
                   </div>
@@ -172,7 +172,6 @@ export default {
       } else {
         disableButton.value = false;
       }
-      console.log(disableButton.value);
     };
 
     async function removeTip(_id) {

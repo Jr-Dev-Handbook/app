@@ -1,17 +1,21 @@
 <template>
-  <TipDetail :tip="tip" />
+  <TipDetail :accountId="accountId" :tip="tip" :removeTip="removeTip" />
 </template>
 
 <script>
 import TipDetail from '../components/TipDetail.vue';
-import { useRoute } from 'vue-router';
+import { wallet } from '@/services/near';
+import { useRoute, useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 export default {
   components: {
     TipDetail
   },
   setup() {
+    const accountId = ref('');
+    accountId.value = wallet.getAccountId();
     const route = useRoute();
+    const router = useRouter();
 
     const API_URL = 'http://localhost:5000/tips';
 
@@ -29,8 +33,18 @@ export default {
       const json = await response.json();
       tip.value = json;
     }
+    async function removeTip(id) {
+      await fetch(`${API_URL}/${id}`, {
+        method: 'DELETE'
+      });
+      router.push({
+        name: 'Home'
+      });
+    }
     return {
-      tip
+      tip,
+      accountId,
+      removeTip
     };
   }
 };

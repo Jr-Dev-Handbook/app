@@ -1,11 +1,12 @@
 <template>
   <div class="max-w-3xl mx-auto py-6 px-4 sm:py-8 sm:px-6 lg:px-8 lg:py-10">
-    <TipForm :tip="tip" :submitForm="updateTip" />
+    <TipForm :accountId="accountId" :tip="tip" :submitForm="updateTip" />
   </div>
 </template>
 
 <script>
 import TipForm from '@/components/TipForm.vue';
+import { wallet } from '@/services/near';
 
 import { useRouter, useRoute } from 'vue-router';
 import { ref, onMounted } from 'vue';
@@ -14,6 +15,8 @@ export default {
     TipForm
   },
   setup() {
+    const accountId = ref('');
+    accountId.value = wallet.getAccountId();
     const API_URL = 'http://localhost:5000/tips';
     const router = useRouter();
     const route = useRoute();
@@ -48,7 +51,7 @@ export default {
           body: JSON.stringify({
             title: tip.value.title,
             content: tip.value.content,
-            creator: tip.value.creator,
+            creator: accountId.value,
             tags: tip.value.tags
           })
         });
@@ -63,7 +66,8 @@ export default {
     return {
       tip,
       updateTip,
-      getTip
+      getTip,
+      accountId
     };
   }
 };

@@ -1,19 +1,23 @@
 <template>
   <div class="max-w-3xl mx-auto py-6 px-4 sm:py-8 sm:px-6 lg:px-8 lg:py-10">
-    <TipForm :tip="tip" :submitForm="createTip" />
+    <TipForm :accountId="accountId" :tip="tip" :submitForm="createTip" />
   </div>
 </template>
 
 <script>
+import { wallet } from '@/services/near';
+
 import TipForm from '@/components/TipForm.vue';
 
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 export default {
   components: {
     TipForm
   },
   setup() {
+    const accountId = ref('');
+    accountId.value = wallet.getAccountId();
     const API_URL = 'http://localhost:5000/tips';
     const router = useRouter();
     const tip = reactive({
@@ -33,7 +37,7 @@ export default {
           body: JSON.stringify({
             title: tip.title,
             content: tip.content,
-            creator: tip.creator,
+            creator: accountId.value,
             tags: tip.tags
           })
         });
@@ -47,7 +51,8 @@ export default {
     }
     return {
       tip,
-      createTip
+      createTip,
+      accountId
     };
   }
 };
